@@ -1,23 +1,18 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
+import { Amplify } from 'aws-amplify';
 
-const inter = Inter({ subsets: ['latin'] })
+import { withAuthenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
 
-export default function Home() {
+import awsExports from '../src/aws-exports'
+Amplify.configure(awsExports);
+
+function Home({ signOut, user }) {
   return (
     <>
-      <Head>
-        <title>Gym Transformation</title>
-        <meta name="description" content="Picture storage" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main>
-        
-
-      </main>
+      <h1>Hello {user.username}</h1>
+      <button onClick={signOut}>Sign out</button>
     </>
-  )
+  );
 }
+
+export default withAuthenticator(Home);

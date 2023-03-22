@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-gymtransformation1-staging-20913-authRole",
+      "UnauthRoleArn": "arn:aws:iam::680031783851:role/amplify-gymtransformation1-staging-20913-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::680031783851:role/amplify-gymtransformation1-staging-20913-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-gymtransformation1-staging-20913-deployment",
+      "UnauthRoleName": "amplify-gymtransformation1-staging-20913-unauthRole",
+      "StackName": "amplify-gymtransformation1-staging-20913",
+      "StackId": "arn:aws:cloudformation:us-east-1:680031783851:stack/amplify-gymtransformation1-staging-20913/8a9051d0-c856-11ed-9cdb-0e2358b211f5",
+      "AmplifyAppId": "d268dssf45dh42"
+    },
+    "categories": {
+      "auth": {
+        "gymtransformation1": {}
+      }
+    }
+  }
+}
