@@ -1,0 +1,14 @@
+.header{
+  align-items:center;
+  display:flex;
+  justify-content: center;
+
+}
+
+.signOutButton{
+  /* align-items:end;
+  display:flex;
+  justify-content: right; */
+  position:absolute;
+  right:2%;
+}
