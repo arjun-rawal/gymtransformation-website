@@ -1,0 +1,12 @@
+{
+  "resourceName": "s3progresspics",
+  "bucketName": "progress-pics",
+  "policyUUID": "1bc07b35",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "DELETE",
+    "READ"
+  ]
+}

@@ -2,8 +2,9 @@ import { Amplify } from 'aws-amplify';
 import styles from '../styles/Home.module.css'
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
-
 import awsExports from '../src/aws-exports'
+import { Storage } from "@aws-amplify/storage"
+
 Amplify.configure(awsExports);
 
 function Home({ signOut, user }) {
@@ -16,6 +17,8 @@ function Home({ signOut, user }) {
     <button onClick={signOut}>Sign out</button>
     </div>
     </div>
+
+    <input type="file" />
     </>
   );
 }

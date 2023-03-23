@@ -14,6 +14,9 @@
     "categories": {
       "auth": {
         "gymtransformation1": {}
+      },
+      "storage": {
+        "s3progresspics": {}
       }
     }
   }

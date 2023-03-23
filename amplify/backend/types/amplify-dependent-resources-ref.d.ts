@@ -9,5 +9,11 @@ export type AmplifyDependentResourcesAttributes = {
             "AppClientIDWeb": "string",
             "AppClientID": "string"
         }
+    },
+    "storage": {
+        "s3progresspics": {
+            "BucketName": "string",
+            "Region": "string"
+        }
     }
 }
