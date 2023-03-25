@@ -11,9 +11,12 @@ import { useState } from 'react';
 Amplify.configure(awsExports);
 
 function Home({ signOut, user }) {
+
+
+
   const [images, setImages] = useState([]);
   const [pastImages, setPastImages] = useState(false);
-
+// retrieveImages();
   async function handleFileSubmit(e) {
     const file = e.target.files[0];
     try {
@@ -40,11 +43,12 @@ function Home({ signOut, user }) {
     }
      // get key from Storage.list
      setImages(imageList)
+     console.log(images);
+    console.log("ASD")
     }
   }
 
   
-  console.log(images);
   return (
     <>
     <div className={styles.header}>
@@ -57,12 +61,13 @@ function Home({ signOut, user }) {
 
 
     <input type="file" onChange={handleFileSubmit}/>
+    <button onClick={retrieveImages}>Load Images</button>
+
     {images[0] !=undefined &&
     
-      images.map((image) => (
-        <img key={"image"} alt="a" src={image} width={200} height={200} /> 
-      ))
-    
+      images.map((image,index) => (
+        <img key={index} alt="a" src={image} width={200} height={200} /> 
+      ))    
   }
     </>
   );
