@@ -20,9 +20,10 @@ function Home({ signOut, user }) {
   const [anchorEl2, setAnchorEl2] = useState(null);
   const [properties, setProperties] = useState(["weight"]);
   const [textInputs, setTextInput] = useState();
+  const day = new Object();
   // retrieveImages();
-  async function handleFileSubmit(e) {
-    const file = e.target.files[0];
+  async function uploadFile(e) {
+    
     try {
       await Storage.put(file.name, file, {
         level: "private",
@@ -82,6 +83,10 @@ function Home({ signOut, user }) {
   const open2 = Boolean(anchorEl2);
   const id2 = open2 ? "simple-popover" : undefined;
 
+
+  function handlePropertyChange(index){
+
+  }
   return (
     <>
       <div className={styles.header}>
@@ -176,12 +181,12 @@ function Home({ signOut, user }) {
           horizontal: "right",
         }}
       >
-        <Input type="file" onChange={handleFileSubmit} />
+        <Input type="file" onChange={()=>{day.file=event.target.files[0]}} />
         <p>Properties</p>
         <div className={styles.propertiesColumn}>
           {true && properties.map((property,index)=>(
           <div key ={index} className={styles.propertiesRow}>
-            <TextField  size="small" label={property} type="number"  />
+            <TextField onChange={()=>{console.log(day); day[property] = event.target.value;}} size="small" label={property} type="number"  />
           </div>
           ))}
         </div>
