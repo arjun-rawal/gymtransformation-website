@@ -11,7 +11,7 @@ import { useState } from 'react';
 Amplify.configure(awsExports);
 
 function Home({ signOut, user }) {
-  const [images, setImages] = useState([""]);
+  const [images, setImages] = useState();
 
   async function handleFileSubmit(e) {
     const file = e.target.files[0];
@@ -34,10 +34,10 @@ function Home({ signOut, user }) {
     }
   }
 
-  const ProgressImages = images.map((image) => (
-     <img key={"image"} alt="a" src={image} width={200} height={200} /> 
+  // const ProgressImages = images.map((image) => (
+  //    <img key={"image"} alt="a" src={image} width={200} height={200} /> 
 
-  ));
+  // ));
 console.log(images);
 
   return (
@@ -52,7 +52,7 @@ console.log(images);
 
 
     <input type="file" onChange={handleFileSubmit}/>
-    <ProgressImages/>
+    {/* <ProgressImages/> */}
     </>
   );
 }
