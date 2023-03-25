@@ -7,13 +7,17 @@ import { Storage } from "@aws-amplify/storage";
 import Image from "next/image";
 import React from "react";
 import { useState } from "react";
-
+import { Button, IconButton, Popover } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Add } from "@mui/icons-material";
 Amplify.configure(awsExports);
 
 function Home({ signOut, user }) {
   const [images, setImages] = useState([]);
   const [imageKeys, setImagekeys] = useState([]);
   const [pastImages, setPastImages] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+
   // retrieveImages();
   async function handleFileSubmit(e) {
     const file = e.target.files[0];
@@ -55,6 +59,19 @@ function Home({ signOut, user }) {
     await Storage.remove(imageKeys[index].key, { level: 'private' });
     retrieveImages();
   }
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
+
   return (
     <>
       <div className={styles.header}>
@@ -65,7 +82,9 @@ function Home({ signOut, user }) {
         </div>
       </div>
 
-      <input type="file" onChange={handleFileSubmit} />
+ 
+
+      
       <button onClick={retrieveImages}>Load Images</button>
 
       <div className={styles.imageGrid}>
@@ -74,8 +93,8 @@ function Home({ signOut, user }) {
             <div key={index}>
               <div style={{ textAlign: "center" }}>
                 
-                {index + 1} 
-                <button onClick={()=>{deleteImage(index)}} style={{marginRight:"2px"}} className={styles.deleteButton}>🗑️</button>
+                Day {index + 1} 
+                <IconButton aria-label="delete" onClick={()=>{deleteImage(index)}} style={{marginRight:"2px"}}><DeleteIcon/> </IconButton> 
               </div>
 
               <img
@@ -86,8 +105,26 @@ function Home({ signOut, user }) {
                 height={200}
               />
             </div>
-          ))}
+          ))
+          }
+  
       </div>
+      <IconButton aria-describedby={id} variant="contained" onClick={handleClick} style={{marginTop:'20px',borderRadius: '10px'}}>
+          <Add sx={{fontSize: 200}}/>
+        </IconButton>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          horizontal: 'right',
+        }}
+      >      
+      <input type="file" onChange={handleFileSubmit} />
+        <h1>Properties</h1>
+      <input type="text"/>
+        </Popover>
     </>
   );
 }
