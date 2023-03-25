@@ -1,14 +1,14 @@
 import { Amplify } from "aws-amplify";
 import styles from "../styles/Home.module.css";
-import { withAuthenticator } from "@aws-amplify/ui-react";
+import { Icon, withAuthenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import awsExports from "../src/aws-exports";
 import { Storage } from "@aws-amplify/storage";
 import Image from "next/image";
 import React from "react";
 import { useState } from "react";
-import { Button, IconButton, Popover } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, IconButton, Popover, Box, Stack, Input, TextField } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Add } from "@mui/icons-material";
 Amplify.configure(awsExports);
 
@@ -16,8 +16,10 @@ function Home({ signOut, user }) {
   const [images, setImages] = useState([]);
   const [imageKeys, setImagekeys] = useState([]);
   const [pastImages, setPastImages] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-
+  const [anchorEl1, setAnchorEl1] = useState(null);
+  const [anchorEl2, setAnchorEl2] = useState(null);
+  const [properties, setProperties] = useState(["weight"]);
+  const [textInputs, setTextInput] = useState();
   // retrieveImages();
   async function handleFileSubmit(e) {
     const file = e.target.files[0];
@@ -55,22 +57,30 @@ function Home({ signOut, user }) {
       setImages(imageList);
     }
   }
-  async function deleteImage(index){
-    await Storage.remove(imageKeys[index].key, { level: 'private' });
+  async function deleteImage(index) {
+    await Storage.remove(imageKeys[index].key, { level: "private" });
     retrieveImages();
   }
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleClick1 = (event) => {
+    setAnchorEl1(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleClose1 = () => {
+    setAnchorEl1(null);
+  };
+  const handleClick2 = (event) => {
+    setAnchorEl2(event.currentTarget);
   };
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const handleClose2 = () => {
+    setAnchorEl2(null);
+  };
+  const open1 = Boolean(anchorEl1);
+  const id1 = open1 ? "simple-popover" : undefined;
 
+  const open2 = Boolean(anchorEl2);
+  const id2 = open2 ? "simple-popover" : undefined;
 
   return (
     <>
@@ -81,20 +91,62 @@ function Home({ signOut, user }) {
           <button onClick={signOut}>Sign out</button>
         </div>
       </div>
-
- 
-
-      
       <button onClick={retrieveImages}>Load Images</button>
-
+      Properties: {properties.join(", ")}
+      <IconButton
+        aria-describedby={id2}
+        onClick={handleClick2}
+        size="small"
+        style={{
+          border: "1px solid black",
+          borderRadius: "2px",
+          marginLeft: "3px",
+        }}
+      >
+        <Add sx={{ fontSize: "15px" }} />
+      </IconButton>
+      <Popover
+        id={id2}
+        open={open2}
+        anchorEl={anchorEl2}
+        onClose={handleClose2}
+        anchorOrigin={{
+          horizontal: "right",
+        }}
+      >
+        <Input
+          type="text"
+          onChange={() => {
+            setTextInput(event.target.value);
+          }}
+        />
+        <Button
+          onClick={() => {
+            handleClose2();
+            if (textInputs.length > 0) {
+              setProperties([...properties, textInputs]);
+            }
+            setTextInput("");
+          }}
+        >
+          Submit
+        </Button>
+      </Popover>
       <div className={styles.imageGrid}>
         {images[0] != undefined &&
           images.map((image, index) => (
             <div key={index}>
               <div style={{ textAlign: "center" }}>
-                
-                Day {index + 1} 
-                <IconButton aria-label="delete" onClick={()=>{deleteImage(index)}} style={{marginRight:"2px"}}><DeleteIcon/> </IconButton> 
+                Day {index + 1}
+                <IconButton
+                  aria-label="delete"
+                  onClick={() => {
+                    deleteImage(index);
+                  }}
+                  style={{ marginRight: "2px" }}
+                >
+                  <DeleteIcon />{" "}
+                </IconButton>
               </div>
 
               <img
@@ -105,26 +157,36 @@ function Home({ signOut, user }) {
                 height={200}
               />
             </div>
-          ))
-          }
-  
+          ))}
       </div>
-      <IconButton aria-describedby={id} variant="contained" onClick={handleClick} style={{marginTop:'20px',borderRadius: '10px'}}>
-          <Add sx={{fontSize: 200}}/>
-        </IconButton>
+      <IconButton
+        aria-describedby={id1}
+        variant="contained"
+        onClick={handleClick1}
+        style={{ marginTop: "20px", borderRadius: "10px" }}
+      >
+        <Add sx={{ fontSize: 200 }} />
+      </IconButton>
       <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
+        id={id1}
+        open={open1}
+        anchorEl={anchorEl1}
+        onClose={handleClose1}
         anchorOrigin={{
-          horizontal: 'right',
+          horizontal: "right",
         }}
-      >      
-      <input type="file" onChange={handleFileSubmit} />
-        <h1>Properties</h1>
-      <input type="text"/>
-        </Popover>
+      >
+        <Input type="file" onChange={handleFileSubmit} />
+        <p>Properties</p>
+        <div className={styles.propertiesColumn}>
+          {true && properties.map((property,index)=>(
+          <div key ={index} className={styles.propertiesRow}>
+            <TextField  size="small" label={property} type="number"  />
+          </div>
+          ))}
+        </div>
+        <Button>Submit</Button>
+      </Popover>
     </>
   );
 }
