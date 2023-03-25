@@ -12,6 +12,7 @@ Amplify.configure(awsExports);
 
 function Home({ signOut, user }) {
   const [images, setImages] = useState([]);
+  const [imageKeys, setImagekeys] = useState([]);
   const [pastImages, setPastImages] = useState(false);
   // retrieveImages();
   async function handleFileSubmit(e) {
@@ -42,15 +43,18 @@ function Home({ signOut, user }) {
       });
       var imageList = [];
       for (var i = 0; i < results.length; i++) {
-        console.log(new Date(results[i].lastModified).getTime());
         imageList.push(await Storage.get(results[i].key, { level: "private" }));
       }
 
       // get key from Storage.list
+      setImagekeys(results);
       setImages(imageList);
     }
   }
-
+  async function deleteImage(index){
+    await Storage.remove(imageKeys[index].key, { level: 'private' });
+    retrieveImages();
+  }
   return (
     <>
       <div className={styles.header}>
@@ -71,7 +75,7 @@ function Home({ signOut, user }) {
               <div style={{ textAlign: "center" }}>
                 
                 {index + 1} 
-                <button style={{marginRight:"2px"}} className={styles.deleteButton} onClick={()=>{console.log(index)}}>🗑️</button>
+                <button onClick={()=>{deleteImage(index)}} style={{marginRight:"2px"}} className={styles.deleteButton}>🗑️</button>
               </div>
 
               <img
