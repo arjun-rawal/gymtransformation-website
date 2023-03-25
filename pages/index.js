@@ -35,15 +35,20 @@ function Home({ signOut, user }) {
       if (results.length > 0) {
         setPastImages(true);
       }
+      results.sort((a,b) =>{
+        let da = new Date(a.lastModified),
+        db = new Date(b.lastModified);
+        return da-db;
+      })
       var imageList = [];
       for (var i = 0; i < results.length; i++) {
+        console.log(new Date(results[i].lastModified).getTime())
         imageList.push(await Storage.get(results[i].key, { level: "private" }));
       }
-      console.log(results);
+
       // get key from Storage.list
       setImages(imageList);
-      console.log(images);
-      console.log("ASD");
+
     }
   }
 
@@ -65,7 +70,7 @@ function Home({ signOut, user }) {
         images.map((image, index) => (
           <div key={index}>
             <p style={{textAlign:'center'}}> {index+1} </p>
-            <img alt="a" src={image} width={200} height={200} />
+            <img style={{borderRadius:'10px',border:'2px solid black'}} alt="a" src={image} width={200} height={200} />
           </div>
         ))}
       </div>
