@@ -16,7 +16,8 @@
         "gymtransformation1": {}
       },
       "storage": {
-        "s3progresspics": {}
+        "s3progresspics": {},
+        "s3gymtransformation1storage91e88757": {}
       }
     }
   }

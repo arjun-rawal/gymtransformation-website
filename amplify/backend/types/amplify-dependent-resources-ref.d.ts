@@ -11,7 +11,7 @@ export type AmplifyDependentResourcesAttributes = {
         }
     },
     "storage": {
-        "s3progresspics": {
+        "s3gymtransformation1storage91e88757": {
             "BucketName": "string",
             "Region": "string"
         }

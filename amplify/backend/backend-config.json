@@ -28,7 +28,7 @@
     }
   },
   "storage": {
-    "s3progresspics": {
+    "s3gymtransformation1storage91e88757": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3"
