@@ -35,20 +35,19 @@ function Home({ signOut, user }) {
       if (results.length > 0) {
         setPastImages(true);
       }
-      results.sort((a,b) =>{
+      results.sort((a, b) => {
         let da = new Date(a.lastModified),
-        db = new Date(b.lastModified);
-        return da-db;
-      })
+          db = new Date(b.lastModified);
+        return da - db;
+      });
       var imageList = [];
       for (var i = 0; i < results.length; i++) {
-        console.log(new Date(results[i].lastModified).getTime())
+        console.log(new Date(results[i].lastModified).getTime());
         imageList.push(await Storage.get(results[i].key, { level: "private" }));
       }
 
       // get key from Storage.list
       setImages(imageList);
-
     }
   }
 
@@ -66,13 +65,24 @@ function Home({ signOut, user }) {
       <button onClick={retrieveImages}>Load Images</button>
 
       <div className={styles.imageGrid}>
-      {images[0] != undefined &&
-        images.map((image, index) => (
-          <div key={index}>
-            <p style={{textAlign:'center'}}> {index+1} </p>
-            <img style={{borderRadius:'10px',border:'2px solid black'}} alt="a" src={image} width={200} height={200} />
-          </div>
-        ))}
+        {images[0] != undefined &&
+          images.map((image, index) => (
+            <div key={index}>
+              <div style={{ textAlign: "center" }}>
+                
+                {index + 1} 
+                <button style={{marginRight:"2px"}} className={styles.deleteButton} onClick={()=>{console.log(index)}}>🗑️</button>
+              </div>
+
+              <img
+                style={{ borderRadius: "10px", border: "2px solid black" }}
+                alt="a"
+                src={image}
+                width={200}
+                height={200}
+              />
+            </div>
+          ))}
       </div>
     </>
   );
