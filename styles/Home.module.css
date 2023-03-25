@@ -12,3 +12,12 @@
   position:absolute;
   right:2%;
 }
+.imageGrid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 20px;
+}

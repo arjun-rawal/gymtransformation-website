@@ -60,10 +60,15 @@ function Home({ signOut, user }) {
       <input type="file" onChange={handleFileSubmit} />
       <button onClick={retrieveImages}>Load Images</button>
 
+      <div className={styles.imageGrid}>
       {images[0] != undefined &&
         images.map((image, index) => (
-          <img key={index} alt="a" src={image} width={200} height={200} />
+          <div key={index}>
+            <p style={{textAlign:'center'}}> {index+1} </p>
+            <img alt="a" src={image} width={200} height={200} />
+          </div>
         ))}
+      </div>
     </>
   );
 }
