@@ -5,5 +5,7 @@
  **************************************************************************/
 
 export { default as studioTheme } from "./studioTheme";
+export { default as TestCreateForm } from "./TestCreateForm";
+export { default as TestUpdateForm } from "./TestUpdateForm";
 export { default as DaysCreateForm } from "./DaysCreateForm";
 export { default as DaysUpdateForm } from "./DaysUpdateForm";
