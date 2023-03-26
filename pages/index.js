@@ -7,8 +7,15 @@ import { Storage } from "@aws-amplify/storage";
 import Image from "next/image";
 import React, { useRef } from "react";
 import { useState } from "react";
-import { Button, IconButton, Popover } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import {
+  Backdrop,
+  Button,
+  IconButton,
+  Input,
+  Popover,
+  TextField,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Add } from "@mui/icons-material";
 Amplify.configure(awsExports);
 
@@ -55,8 +62,8 @@ function Home({ signOut, user }) {
       setImages(imageList);
     }
   }
-  async function deleteImage(index){
-    await Storage.remove(imageKeys[index].key, { level: 'private' });
+  async function deleteImage(index) {
+    await Storage.remove(imageKeys[index].key, { level: "private" });
     retrieveImages();
   }
 
@@ -69,12 +76,20 @@ function Home({ signOut, user }) {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? "simple-popover" : undefined;
 
   const hiddenFileInput = useRef(null);
-  const handleFileClick = event => {
+  const handleFileClick = (event) => {
     hiddenFileInput.current.click();
   };
+
+  const [backdropOpen, setBackdropOpen] = useState(false);
+  function toggleBackdrop() {
+    setBackdropOpen(!backdropOpen);
+  }
+  const [num1, setNum1] = useState();
+  const [num2, setNum2] = useState();
+
   return (
     <>
       <div className={styles.header}>
@@ -84,20 +99,76 @@ function Home({ signOut, user }) {
           <button onClick={signOut}>Sign out</button>
         </div>
       </div>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={backdropOpen}
+        onClick={()=>{toggleBackdrop();}}
+      >
+        <img
+          style={{ borderRadius: "10px", border: "2px solid black" }}
+          alt="a"
+          src={images[num1-1]}
+          width={800}
+          height={800}
+        />
+        <img
+          style={{ borderRadius: "10px", border: "2px solid black" }}
+          alt="a"
+          src={images[num2-1]}
+          width={800}
+          height={800}
+        />
+      </Backdrop>
 
- 
-
-      
       <button onClick={retrieveImages}>Load Images</button>
-
+      <button
+        aria-describedby={id}
+        style={{ marginLeft: "3px" }}
+        onClick={handleClick}
+      >
+        Compare Images
+      </button>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "center",
+          horizontal: "right",
+        }}
+      >
+        <TextField
+          type="number"
+          label="image 1 number"
+          onChange={() => {
+            setNum1(event.target.value);
+          }}
+        />
+        <TextField
+          type="number"
+          label="image 2 number"
+          onChange={() => {
+            setNum2(event.target.value);
+          }}
+        />
+        <Button onClick={toggleBackdrop}>Next</Button>
+      </Popover>
       <div className={styles.imageGrid}>
         {images[0] != undefined &&
           images.map((image, index) => (
             <div key={index}>
               <div style={{ textAlign: "center" }}>
-                
-                Day {index + 1} 
-                <IconButton aria-label="delete" onClick={()=>{deleteImage(index)}} style={{marginRight:"2px"}}><DeleteIcon/> </IconButton> 
+                Day {index + 1}
+                <IconButton
+                  aria-label="delete"
+                  onClick={() => {
+                    deleteImage(index);
+                  }}
+                  style={{ marginRight: "2px" }}
+                >
+                  <DeleteIcon />{" "}
+                </IconButton>
               </div>
 
               <img
@@ -108,18 +179,24 @@ function Home({ signOut, user }) {
                 height={200}
               />
             </div>
-          ))
-          }
-   
-        <IconButton aria-describedby={id} onClick={handleFileClick} variant="contained"  style={{marginTop:'20px',borderRadius: '10px'}}>
-          <Add sx={{fontSize: 200}}/>
-        </IconButton>
+          ))}
 
+        <IconButton
+          aria-describedby={id}
+          onClick={handleFileClick}
+          variant="contained"
+          style={{ marginTop: "20px", borderRadius: "10px" }}
+        >
+          <Add sx={{ fontSize: 200 }} />
+        </IconButton>
       </div>
 
-  
-      <input type="file" onChange={handleFileSubmit}  ref={hiddenFileInput} style={{display:'none'}} />
-
+      <input
+        type="file"
+        onChange={handleFileSubmit}
+        ref={hiddenFileInput}
+        style={{ display: "none" }}
+      />
     </>
   );
 }
