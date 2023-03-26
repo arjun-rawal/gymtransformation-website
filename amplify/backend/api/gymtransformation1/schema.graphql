@@ -1,0 +1,6 @@
+type Days @model @auth(rules: [{allow: owner}]) {
+  id: ID!
+  properties: AWSJSON
+  index: Int
+}
+ 

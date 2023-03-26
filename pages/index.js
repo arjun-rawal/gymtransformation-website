@@ -1,4 +1,4 @@
-import { Amplify } from "aws-amplify";
+import { Amplify, DataStore } from "aws-amplify";
 import styles from "../styles/Home.module.css";
 import { Icon, withAuthenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
@@ -7,9 +7,20 @@ import { Storage } from "@aws-amplify/storage";
 import Image from "next/image";
 import React from "react";
 import { useState } from "react";
-import { Button, IconButton, Popover, Box, Stack, Input, TextField } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  Popover,
+  Box,
+  Stack,
+  Input,
+  TextField,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Add } from "@mui/icons-material";
+import { Days } from "@/src/models";
+
+
 Amplify.configure(awsExports);
 
 function Home({ signOut, user }) {
@@ -23,7 +34,6 @@ function Home({ signOut, user }) {
   const day = new Object();
   // retrieveImages();
   async function uploadFile(e) {
-    
     try {
       await Storage.put(file.name, file, {
         level: "private",
@@ -83,9 +93,14 @@ function Home({ signOut, user }) {
   const open2 = Boolean(anchorEl2);
   const id2 = open2 ? "simple-popover" : undefined;
 
-
-  function handlePropertyChange(index){
-
+  async function sendProperties(){
+    await DataStore.save(
+      new Days({
+        properties: day, 
+        index: images.length,
+      
+      })
+    );
   }
   return (
     <>
@@ -117,6 +132,7 @@ function Home({ signOut, user }) {
         onClose={handleClose2}
         anchorOrigin={{
           horizontal: "right",
+          vertical:'bottom'
         }}
       >
         <Input
@@ -179,18 +195,33 @@ function Home({ signOut, user }) {
         onClose={handleClose1}
         anchorOrigin={{
           horizontal: "right",
+          vertical:'bottom'
         }}
       >
-        <Input type="file" onChange={()=>{day.file=event.target.files[0]}} />
+        <Input
+          type="file"
+          onChange={() => {
+            day.file = event.target.files[0];
+          }}
+        />
         <p>Properties</p>
         <div className={styles.propertiesColumn}>
-          {true && properties.map((property,index)=>(
-          <div key ={index} className={styles.propertiesRow}>
-            <TextField onChange={()=>{console.log(day); day[property] = event.target.value;}} size="small" label={property} type="number"  />
-          </div>
-          ))}
+          {true &&
+            properties.map((property, index) => (
+              <div key={index} className={styles.propertiesRow}>
+                <TextField
+                  onChange={() => {
+                    console.log(day);
+                    day[property] = event.target.value;
+                  }}
+                  size="small"
+                  label={property}
+                  type="number"
+                />
+              </div>
+            ))}
         </div>
-        <Button>Submit</Button>
+        <Button onClick={sendProperties}>Submit</Button>
       </Popover>
     </>
   );
